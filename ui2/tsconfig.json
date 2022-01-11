@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "baseUrl": "src",
+    "paths": {
+      // "@/*": [
+      //     "*"
+      // ],
+      "/src/*": ["*"]
+      // "@ajax": ["./api/ajax"]
+    },
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "outDir": "dist",
+    "moduleResolution": "Node",
+    "experimentalDecorators": true,
+    "skipDefaultLibCheck": true,
+    "resolveJsonModule": true,
+
+    "allowJs": true,
+    "strict": true,
+
+    // "module": "CommonJS",
+    // "target": "ES5",
+    "jsx": "react",
+    // "sourceMap": true,
+    "lib": ["ESNext", "DOM"],
+
+    "target": "esnext",
+    "sourceMap": true,
+    "module": "esnext"
+    // "jsx": "react",
+    // "lib": ["esnext"]
+  },
+  "include": ["src/**/*", "types/"],
+  "exclude": ["dist/**/*"]
+}
