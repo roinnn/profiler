@@ -10,6 +10,7 @@ export default function Main() {
     'types',
     'labels',
   ]);
+
   return (
     <Box p={4}>
       <Text color={'red.400'}>{date}</Text>
