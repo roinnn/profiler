@@ -1,8 +1,10 @@
 import Card from '@/components/Card';
 import { useApi } from '@/hooks/api/base';
+import { appStore } from '@/store';
 import { SimpleGrid } from '@chakra-ui/react';
 import { Cascader, DatePicker, Select } from 'antd';
-import { useMemo, useRef } from 'react';
+import dayjs, { Dayjs } from 'dayjs';
+import { useEffect, useMemo, useRef } from 'react';
 const { Option, OptGroup } = Select;
 
 export default function HeaderCard() {
@@ -32,7 +34,9 @@ function TypeSelect() {
     'trace',
   ]).current;
 
-  const handleChange = () => {};
+  const handleChange = (selectTypes: string[]) => {
+    appStore.updateTypes(selectTypes);
+  };
 
   return (
     <Select loading={loading} mode={'multiple'} placeholder="Select Type" onChange={handleChange}>
@@ -78,8 +82,22 @@ function LabelSelect() {
       };
     });
   }, [data]);
-  const onChange = (value: any) => {
-    console.log(value);
+  const onChange = (...args: any) => {
+    const selectLabels = args[0] as string[][];
+    const labels: { Key: string; Value: string }[] = [];
+    selectLabels.forEach((item, index) => {
+      const [Key, Value] = item;
+      if (!Value) {
+        const allObj = args[1][index][0] as any;
+        console.log(allObj);
+        allObj.children.forEach((c: any) => {
+          labels.push({ Key, Value: c.value });
+        });
+      } else {
+        labels.push({ Key, Value });
+      }
+    });
+    appStore.updateLabels(labels);
   };
   return (
     <Cascader
@@ -95,8 +113,12 @@ function LabelSelect() {
 }
 
 function DateSelect() {
-  function onChange(date: any, dateString: any) {
-    console.log(date, dateString);
+  function onChange(date: Dayjs, dateString: any) {
+    appStore.updateDate(date.unix() * 1000);
   }
-  return <DatePicker onChange={onChange} />;
+  useEffect(() => {
+    // 默认选择今天
+    appStore.updateDate(dayjs(new Date()).unix() * 1000);
+  }, []);
+  return <DatePicker defaultValue={dayjs(new Date()) as any} onChange={onChange as any} />;
 }
