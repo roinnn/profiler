@@ -5,5 +5,7 @@ import useSWR from 'swr';
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 export const useApi = (url: string) => {
-  return useSWR(Config.BaseApi + url, fetcher);
+  return useSWR(Config.BaseApi + url, fetcher, {
+    revalidateOnFocus: false,
+  });
 };
