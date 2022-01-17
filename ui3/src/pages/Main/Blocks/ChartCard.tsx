@@ -1,4 +1,5 @@
 import Card from '@/components/Card';
+import Config from '@/helper/Config';
 import { useApi } from '@/hooks/api/base';
 import { appStore } from '@/store';
 import { Box } from '@chakra-ui/react';
@@ -146,9 +147,19 @@ function Chart({
     };
   }, [data, type]);
 
+  const onEvents = {
+    click(params: any, eChartInstant: any) {
+      if (type === 'trace') {
+        window.open(`${Config.BaseApi}/api/trace/ui/${params.data.sourceData.ProfileID}`);
+      } else {
+        window.open(`${Config.BaseApi}/api/pprof/ui/${params.data.sourceData.ProfileID}?si=${type}`);
+      }
+    },
+  };
+
   return (
     <Spin spinning={loading}>
-      <ReactECharts option={options} />
+      <ReactECharts option={options} onEvents={onEvents} />
     </Spin>
   );
 }
